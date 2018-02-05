@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Proyecto 0 - Cloud</title>
     <style type="text/css">
         .bgimg {
             background-image: url('background-eventos.jpg');
@@ -33,10 +33,10 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                     <li><a class="glyphicon glyphicon-user" href="{% url 'eventos:index' %}">{{ user.username }}</a> </li>
-                    <li><a class="glyphicon glyphicon-log-out" href="{% url 'eventos:logout' %}">Logout</a> </li>
+                    <li><a class="glyphicon glyphicon-log-out" href="{% url 'eventos:logout' %}">Salir</a> </li>
                 {% else %}
                     <li><a href="{% url 'eventos:addUser' %}">Registro</a> </li>
-                    <li><a class="glyphicon glyphicon-log-in" href="{% url 'eventos:login' %}">Login</a> </li>
+                    <li><a class="glyphicon glyphicon-log-in" href="{% url 'eventos:login' %}">Iniciar Sesión</a> </li>
                 {% endif %}
             </ul>
         </div>
@@ -74,7 +74,7 @@
         <tbody>
             {% for evento in list_eventos %}
                 <tr>
-                    <td><a href="{% url 'eventos:edit_evento' evento.id %}">{{ evento.txt_evento}}</a></td>
+                    <td><a href="{% url 'eventos:detalle_evento' evento.id %}">{{ evento.txt_evento}}</a></td>
                     <td>{{ evento.txt_lugar}}</td>
                     <td>{{ evento.fec_inicio}}</td>
                     <td>{{ evento.fec_final}}</td>

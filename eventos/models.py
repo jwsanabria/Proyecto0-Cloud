@@ -18,21 +18,24 @@ class Evento(models.Model):
         ('P', 'Presencial'),
         ('V', 'Virtual')
     )
-    txt_evento = models.CharField(max_length=200, verbose_name='Nombre', help_text='Nombre del evento')
+    txt_evento = models.CharField(max_length=200, verbose_name='Nombre')
     ind_categoria = models.CharField(
         max_length=4,
         choices=CATEGORIAS_CHOICES
     )
-    txt_lugar = models.CharField(max_length=100, verbose_name='Lugar', help_text='Lugar')
-    txt_direccion = models.CharField(max_length=100, verbose_name='Dirección', help_text='Dirección')
-    fec_inicio = models.DateField(auto_now_add=False, help_text='Fecha de inicio')
-    fec_final = models.DateField(auto_now_add=False, help_text='Fecha de final')
+    txt_lugar = models.CharField(max_length=100, verbose_name='Lugar')
+    txt_direccion = models.CharField(max_length=100, verbose_name='Dirección')
+    fec_inicio = models.DateField(auto_now_add=False )
+    fec_final = models.DateField(auto_now_add=False)
     ind_modalidad = models.CharField(
         max_length=1,
         choices=MODALIDADES_CHOICES
     )
     fec_creacion = models.DateTimeField(auto_now_add=True, blank=True)
     user = models.ForeignKey(User, null=True)
+
+    def __str__(self):
+        return self.txt_evento
 
     def get_absolute_url(self):
         return reverse('edit_evento', kwargs={'pk': self.pk})
@@ -54,23 +57,14 @@ class EventoForm(ModelForm):
                    'fec_final' : DateInput(),}
 
 class UserForm(ModelForm):
-    #username = forms.CharField(max_length=50)
-    #first_name = forms.CharField(max_length=20)
-    #last_name = forms.CharField(max_length=20)
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput())
     password2 = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
-        #fields = ['username', 'first_name', 'last_name', 'email', 'password', 'password2']
         fields = ['email', 'password', 'password2']
 
-    #def clean_username(self):
-    #    username = self.cleaned_data['username']
-    #    if User.objects.filter(username=username):
-    #        raise forms.ValidationError('Nombre de usuario ya registrado')
-    #    return username
 
     def clean_email(self):
         email = self.cleaned_data['email']

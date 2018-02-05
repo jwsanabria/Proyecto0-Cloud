@@ -4,6 +4,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.defaulttags import register
 
 from eventos.models import Evento, EventoForm, UserForm
 
@@ -20,7 +21,7 @@ def add_evento(request):
     if request.method == 'POST' :
         form = EventoForm(request.POST, request.FILES)
         if form.is_valid():
-            new_evento = Evento(txt_evento=request.POST.get('txt_evento'),
+            nuevo_evento = Evento(txt_evento=request.POST.get('txt_evento'),
                                 txt_direccion=request.POST.get('txt_direccion'),
                                 ind_categoria=request.POST.get('ind_categoria'),
                                 txt_lugar= request.POST.get('txt_lugar'),
@@ -28,7 +29,7 @@ def add_evento(request):
                                 fec_final=request.POST.get('fec_final'),
                                 ind_modalidad=request.POST.get('ind_modalidad'),
                                 user=request.user)
-            new_evento.save()
+            nuevo_evento.save()
 
             return HttpResponseRedirect(reverse('eventos:index'))
 
@@ -69,6 +70,10 @@ def evento_update(request, pk, template_name='eventos/evento_form.html'):
         return HttpResponseRedirect(reverse('eventos:index'))
     return render(request, template_name, {'form': form})
 
+def detalle_evento(request, pk, template_name='eventos/detalle_evento.html'):
+    evento = get_object_or_404(Evento, pk=pk)
+    return render(request, template_name, {'object': evento, 'categorias': Evento.CATEGORIAS_CHOICES, 'modalidades': Evento.MODALIDADES_CHOICES})
+
 def evento_delete(request, pk, template_name='eventos/evento_confirm_delete.html'):
     evento = get_object_or_404(Evento, pk=pk)
     if request.method=='POST':
@@ -82,15 +87,10 @@ def add_user_view(request):
         form = UserForm(request.POST)
         if form.is_valid():
             cleaned_data = form.cleaned_data
-            #username = cleaned_data.get('username')
             email = cleaned_data.get('email')
-            #first_name = cleaned_data.get('first_name')
-            #last_name = cleaned_data.get('last_name')
             password = cleaned_data.get('password')
 
             user_model = User.objects.create_user(username=email, password=password)
-            #user_model.first_name = first_name
-            #user_model.last_name = last_name
             user_model.email = email
             user_model.save()
 
@@ -124,3 +124,8 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('eventos:index'))
+
+@register.filter
+def get_item(tuplas, key):
+    dictionary = dict((x, y) for x, y in tuplas)
+    return dictionary.get(key)

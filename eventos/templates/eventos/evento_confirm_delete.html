@@ -1,13 +1,57 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Proyecto 0 - Cloud</title>
 </head>
 <body>
-<form method="post">{% csrf_token %}
-    Are you sure you want to delete "{{ object }}" ?
-    <input type="submit" value="Submit" />
-</form>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapse" data-toggle="collapse" data-target="#navbar" aria-expanded="false" >
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"/>
+                <span class="icon-bar"/>
+                <span class="icon-bar"/>
+            </button>
+            <a class="navbar-brand" href="{% url 'eventos:index' %}">Eventos</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav"></ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                    <li><a class="glyphicon glyphicon-user" href="{% url 'eventos:index' %}">{{ user.username }}</a> </li>
+                    <li><a class="glyphicon glyphicon-log-out" href="{% url 'eventos:logout' %}">Salir</a> </li>
+                {% else %}
+                    <li><a href="{% url 'eventos:addUser' %}">Registro</a> </li>
+                    <li><a class="glyphicon glyphicon-log-in" href="{% url 'eventos:login' %}">Iniciar Sesión</a> </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<br/><br/>
+{% block content %}
+    <div class="row">
+        <div class="col-md-4 col-sm-offset-4">
+            <div class="page-header">
+                <h2>Evento: {{ object.txt_evento }}</h2>
+            </div>
+            <form method="post">{% csrf_token %}
+                Confirma eliminar este evento?
+                {% buttons %}
+                    <input type="submit" value="Eliminar" class="btn btn-danger"/>
+                    <a href="{% url 'eventos:index' %}" class="btn btn-primary">Regresar</a>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
 </body>
 </html>
