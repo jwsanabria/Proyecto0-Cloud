@@ -43,8 +43,14 @@
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
-            <input type="submit" value="Guardar" class="btn btn-primary btn-block"/>
-            <a href="{% url "eventos:index" %}" class="btn btn-secondary btn-block">Regresar</a>
+            <div class="row">
+                <div class="pull-left">
+                    <a href="{% url "eventos:index" %}" class="btn btn-success">Regresar</a>
+                </div>
+                <div class="pull-right">
+                    <input type="submit" value="Guardar" class="btn btn-primary"/>
+                </div>
+            </div>
         {% endbuttons %}
     </form>
 {% endblock %}

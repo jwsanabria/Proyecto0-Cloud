@@ -68,7 +68,9 @@
                 <label for="control-label" for="fec_final">Fecha final</label>
                 {{ object.fec_final }}
             </div>
-            <a href="{% url 'eventos:index' %}" class="btn btn-primary">Regresar</a>
+            <div class="pull-right">
+                <a href="{% url 'eventos:index' %}" class="btn btn-primary">Regresar</a>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -25,8 +25,8 @@ class Evento(models.Model):
     )
     txt_lugar = models.CharField(max_length=100, verbose_name='Lugar')
     txt_direccion = models.CharField(max_length=100, verbose_name='Dirección')
-    fec_inicio = models.DateField(auto_now_add=False )
-    fec_final = models.DateField(auto_now_add=False)
+    fec_inicio = models.DateField(auto_now_add=False, help_text='dd/mm/yyyy' )
+    fec_final = models.DateField(auto_now_add=False, help_text='dd/mm/yyyy')
     ind_modalidad = models.CharField(
         max_length=1,
         choices=MODALIDADES_CHOICES
@@ -53,8 +53,8 @@ class EventoForm(ModelForm):
         widgets = {'txt_evento': forms.TextInput(attrs={'class': 'form-control', 'maxlength': '200'}),
                    'txt_lugar': forms.TextInput(attrs={'class': 'form-control', 'maxlength': '100'}),
                    'txt_direccion': forms.TextInput(attrs={'class': 'form-control', 'maxlength': '100'}),
-                   'fec_inicio': DateInput(),
-                   'fec_final' : DateInput(),}
+                   'fec_inicio':DateInput(format = '%d/%m/%Y'),
+                   'fec_final' : DateInput(format = '%d/%m/%Y')}
 
 class UserForm(ModelForm):
     email = forms.EmailField()

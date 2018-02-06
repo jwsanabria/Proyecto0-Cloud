@@ -13,7 +13,7 @@ def index(request):
     if request.user.is_authenticated():
         list_eventos = Evento.objects.all().order_by('-fec_creacion').filter(user=request.user)
     else:
-        list_eventos = None
+        return HttpResponseRedirect(reverse('eventos:login'))
     context = {'list_eventos': list_eventos}
     return render(request, 'eventos/index.html', context)
 
@@ -94,6 +94,10 @@ def add_user_view(request):
             user_model.email = email
             user_model.save()
 
+            new_user = authenticate(username=email,
+                                    password=password,
+                                    )
+            login(request, new_user)
             return HttpResponseRedirect(reverse('eventos:index'))
     else:
         form = UserForm()
